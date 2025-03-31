@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Đăng Nhập</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Form đăng nhập -->
+    <div class="login-container" id="loginForm">
+        <h2>Đăng nhập</h2>
+        <form>
+            <label for="username">Tên đăng nhập</label>
+            <input type="text" id="username" placeholder="Mời nhập" required>
+            
+            <label for="password">Mật khẩu</label>
+            <input type="password" id="password" placeholder="Mời nhập" required>
+            
+            <div class="buttons">
+                <button type="button" class="cancel-btn">Thoát</button>
+                <button type="submit" class="login-btn">Đăng nhập</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Thông báo đăng nhập thành công -->
+    <div class="success-message" id="successMessage">
+        <div class="checkmark">✔</div>
+        <p>Đăng nhập thành công!</p>
+        <button class="back-btn" onclick="backToLogin()">Thoát</button>
+    </div>
+
+    <script>
+        // JavaScript để hiển thị thông báo thành công khi nhấn nút đăng nhập
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault(); // Ngăn form gửi đi
+            document.getElementById('loginForm').style.display = 'none'; // Ẩn form
+            document.getElementById('successMessage').style.display = 'flex'; // Hiển thị thông báo
+        });
+
+        // Nút thoát để quay lại form
+        document.querySelector('.cancel-btn').addEventListener('click', function() {
+            document.querySelector('form').reset(); 
+        });
+
+        // Nút thoát trong form để reset
+        document.querySelector('.cancel-btn').addEventListener('click', function() {
+            document.querySelector('form').reset(); // Reset form
+        });
+
+        // Hàm quay lại trang đăng nhập
+        function backToLogin() {
+            document.getElementById('successMessage').style.display = 'none'; // Ẩn thông báo
+            document.getElementById('loginForm').style.display = 'block'; // Hiển thị form
+            document.querySelector('form').reset(); // Reset form
+        }
+    </script>
+</body>
+</html>
