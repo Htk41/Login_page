@@ -10,12 +10,14 @@
     <!-- Form đăng nhập -->
     <div class="login-container" id="loginForm">
         <h2>Đăng nhập</h2>
-        <form>
+        <form id="loginFormElement">
             <label for="username">Tên đăng nhập</label>
             <input type="text" id="username" placeholder="Mời nhập" required>
             
             <label for="password">Mật khẩu</label>
             <input type="password" id="password" placeholder="Mời nhập" required>
+            
+            <div class="error-message" id="errorMessage"></div>
             
             <div class="buttons">
                 <button type="button" class="cancel-btn">Thoát</button>
@@ -32,28 +34,80 @@
     </div>
 
     <script>
-        // JavaScript để hiển thị thông báo thành công khi nhấn nút đăng nhập
-        document.querySelector('form').addEventListener('submit', function(e) {
-            e.preventDefault(); // Ngăn form gửi đi
-            document.getElementById('loginForm').style.display = 'none'; // Ẩn form
-            document.getElementById('successMessage').style.display = 'flex'; // Hiển thị thông báo
-        });
+        // Tài khoản chuẩn (hardcode)
+        const VALID_EMAIL = "test@gmail.com";
+        const VALID_PASSWORD = "1234567";
 
-        // Nút thoát để quay lại form
-        document.querySelector('.cancel-btn').addEventListener('click', function() {
-            document.querySelector('form').reset(); 
+        // Hàm kiểm tra định dạng email
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        // JavaScript để xử lý đăng nhập
+        document.getElementById('loginFormElement').addEventListener('submit', function(e) {
+            e.preventDefault(); // Ngăn form gửi đi
+
+            const email = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const errorMessage = document.getElementById('errorMessage');
+
+            // Reset thông báo lỗi
+            errorMessage.textContent = '';
+
+            // Trường hợp thiếu thông tin
+            if (!email && !password) {
+                errorMessage.textContent = 'Vui lòng nhập đầy đủ email và mật khẩu!';
+                return;
+            }
+            if (!email) {
+                errorMessage.textContent = 'Vui lòng nhập email!';
+                return;
+            }
+            if (!password) {
+                errorMessage.textContent = 'Vui lòng nhập mật khẩu!';
+                return;
+            }
+
+            // Kiểm tra định dạng email
+            if (!isValidEmail(email)) {
+                errorMessage.textContent = 'Email không đúng định dạng!';
+                return;
+            }
+
+            // Kiểm tra tài khoản có tồn tại không
+            if (email !== VALID_EMAIL) {
+                errorMessage.textContent = 'Tài khoản không tồn tại trong hệ thống!';
+                return;
+            }
+
+            // Kiểm tra mật khẩu
+            if (password.length < 6) {
+                errorMessage.textContent = 'Mật khẩu phải có ít nhất 6 ký tự!';
+                return;
+            }
+            if (password !== VALID_PASSWORD) {
+                errorMessage.textContent = 'Mật khẩu không chính xác!';
+                return;
+            }
+
+            // Nếu tất cả điều kiện đều thỏa mãn, hiển thị thông báo thành công
+            document.getElementById('loginForm').style.display = 'none'; 
+            document.getElementById('successMessage').style.display = 'flex'; 
         });
 
         // Nút thoát trong form để reset
         document.querySelector('.cancel-btn').addEventListener('click', function() {
-            document.querySelector('form').reset(); // Reset form
+            document.getElementById('loginFormElement').reset(); 
+            document.getElementById('errorMessage').textContent = ''; 
         });
 
         // Hàm quay lại trang đăng nhập
         function backToLogin() {
-            document.getElementById('successMessage').style.display = 'none'; // Ẩn thông báo
-            document.getElementById('loginForm').style.display = 'block'; // Hiển thị form
-            document.querySelector('form').reset(); // Reset form
+            document.getElementById('successMessage').style.display = 'none'; 
+            document.getElementById('loginForm').style.display = 'block'; 
+            document.getElementById('loginFormElement').reset(); 
+            document.getElementById('errorMessage').textContent = ''; 
         }
     </script>
 </body>
